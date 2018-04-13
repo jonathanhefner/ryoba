@@ -24,4 +24,26 @@ class NokogiriSearchableTest < Minitest::Test
     assert_match "#bad2", error.message
   end
 
+  def test_atbang_with_some_matching
+    node = make_node('<div id="good1" /> <div id="good2" />')
+
+    [
+      ["div"],
+      ["#good1", "#good2"],
+      ["#good2", "#good1"],
+      ["#good1", "#bad1"],
+      ["#bad1", "#good1"],
+    ].each do |queries|
+      assert_equal node.at(*queries), node.at!(*queries)
+    end
+  end
+
+  def test_atbang_with_none_matching
+    node = make_node('<div id="good1" />')
+
+    error = assert_raises(Ryoba::Error) { node.at!("#bad1", "#bad2") }
+    assert_match "#bad1", error.message
+    assert_match "#bad2", error.message
+  end
+
 end
