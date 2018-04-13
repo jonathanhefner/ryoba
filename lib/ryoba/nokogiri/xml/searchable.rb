@@ -45,4 +45,13 @@ module Nokogiri::XML::Searchable
     results
   end
 
+  # Like +Searchable#ancestors+, but returns only the first matching
+  # ancestor.
+  #
+  # @param selector [String]
+  # @return [Nokogiri::XML::Element, nil]
+  def ancestor(selector = nil)
+    self.ancestors(selector).first
+  end
+
 end
