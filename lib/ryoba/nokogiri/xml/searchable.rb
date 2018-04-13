@@ -30,4 +30,19 @@ module Nokogiri::XML::Searchable
     result
   end
 
+  # Like +Searchable#ancestors+, but raises an exception if there are no
+  # matching ancestors.
+  #
+  # @param selector [String]
+  # @return [Array<Nokogiri::XML::Element>]
+  # @raise [Ryoba::Error]
+  #   if no ancestors match +selector+
+  def ancestors!(selector = nil)
+    results = self.ancestors(selector)
+    if results.empty?
+      raise Ryoba::Error.new("No ancestors matching #{selector.inspect}")
+    end
+    results
+  end
+
 end

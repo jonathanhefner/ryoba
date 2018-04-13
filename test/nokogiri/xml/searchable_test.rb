@@ -46,4 +46,21 @@ class NokogiriSearchableTest < Minitest::Test
     assert_match "#bad2", error.message
   end
 
+  def test_ancestorsbang_with_some_matching
+    node = make_node('<div id="outer"> <div> <div id="inner" /> </div> </div>')
+    inner = node.at("#inner")
+
+    [nil, "div", "#outer"].each do |selector|
+      assert_equal inner.ancestors(selector), inner.ancestors!(selector)
+    end
+  end
+
+  def test_ancestorsbang_with_none_matching
+    node = make_node('<div> <div id="inner" /> </div>')
+    inner = node.at("#inner")
+
+    error = assert_raises(Ryoba::Error) { inner.ancestors!("#bad") }
+    assert_match "#bad", error.message
+  end
+
 end
