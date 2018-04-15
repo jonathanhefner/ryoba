@@ -22,52 +22,56 @@ class NokogiriXmlNodeTest < Minitest::Test
     assert_raises(Ryoba::Error) { node.text! }
   end
 
-  def test_uri_all_relative
-    expected = URI("/foo")
+  def test_uri_relative
+    relative = "/foo"
+    expected = URI(relative)
 
-    make_nodes_with_uri(expected).each do |node|
-      assert_equal expected, node.uri
-    end
+    assert_node_uri expected, relative
   end
 
-  def test_uri_all_relative_to_absolute
-    base = "http://localhost"
+  def test_uri_relative_to_absolute
     relative = "/foo"
+    base = "http://localhost"
     expected = URI.join(base, relative)
 
-    make_nodes_with_uri(relative, base).each do |node|
-      assert_equal expected, node.uri
-    end
+    assert_node_uri expected, relative, base
   end
 
-  def test_uri_all_absolute
+  def test_uri_absolute
+    absolute = "http://localhost/foo"
     base = "http://example.com"
-    expected = URI("http://localhost/foo")
+    expected = URI(absolute)
 
-    make_nodes_with_uri(expected, base).each do |node|
+    assert_node_uri expected, absolute, base
+  end
+
+  def test_uri_from_appropriate_html_attribute
+    expected = URI("/foo")
+
+    html = Nokogiri::XML::Node::HTML_ELEMENT_URI_ATTRIBUTES.map do |el, attr|
+      "<#{el} #{attr}=\"#{expected}\" />"
+    end.join
+
+    make_node(html).children.each do |node|
       assert_equal expected, node.uri
     end
   end
 
-  def test_uri_all_missing
-    node = make_node('<a/> <img/> <form/> <div/>')
+  def test_uri_missing
+    html = Nokogiri::XML::Node::HTML_ELEMENT_URI_ATTRIBUTES.keys.
+      map{|el| "<#{el}/>" }.join(" ") + " <div/>"
 
-    node.children.each do |no_uri|
-      assert_nil no_uri.uri
+    make_node(html).children.each do |node|
+      assert_nil node.uri
     end
   end
 
   private
 
-  def make_nodes_with_uri(uri, document_uri = nil)
-    xml = <<-XML
-      <a href="#{uri}" />
-      <img src="#{uri}" />
-      <form action="#{uri}" />
-    XML
-
-    Nokogiri::XML::Document.parse(xml, document_uri && document_uri.to_s).
-      children.reject(&:text?)
+  def assert_node_uri(expected, attribute_value, document_url = nil)
+    xml = "<div data-uri=\"#{attribute_value}\" />"
+    node = Nokogiri::XML::Document.parse(xml, document_url).child
+    assert_equal expected, node.uri("data-uri")
   end
 
 end

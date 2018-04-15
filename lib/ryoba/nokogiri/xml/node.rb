@@ -16,20 +16,37 @@ class Nokogiri::XML::Node
     result
   end
 
-  # Returns the URI for an HTML link ( +<a>+ ), image ( +<img>+ ), or
-  # form ( +<form>+ ).  If possible, a relative URI will be converted to
-  # an absolute URI, based on the Node document's +url+ attribute.
+  HTML_ELEMENT_URI_ATTRIBUTES = {
+    "a" => "href",
+    "img" => "src",
+    "form" => "action",
+  }
+
+  # Returns a URI from a specified attribute's value.  If no attribute
+  # is specified, an appropriate attribute will be chosen from
+  # {HTML_ELEMENT_URI_ATTRIBUTES} using the Node's +name+, if possible.
+  # A relative URI will be converted to an absolute URI, based on the
+  # Node document's +url+, if possible.
   #
+  # @example
+  #   xml = Nokogiri::XML(<<-XML, "http://localhost/qux")
+  #     <body>
+  #       <a href="https://www.example.com/foo">FOO</a>
+  #       <div data-src="/bar" />
+  #       <p>blah</p>
+  #     </body>
+  #   XML
+  #
+  #   xml.at("a").uri                # == URI("https://www.example.com/foo")
+  #   xml.at("div").uri("data-src")  # == URI("http://localhost/qux/bar")
+  #   xml.at("p").uri                # == nil
+  #
+  # @param attribute_name [String]
+  #   name of the attribute to return as a URI
   # @return [URI, nil]
-  def uri
-    url = case self.name
-      when "a"
-        self["href"]
-      when "img"
-        self["src"]
-      when "form"
-        self["action"]
-      end
+  def uri(attribute_name = nil)
+    attribute_name ||= HTML_ELEMENT_URI_ATTRIBUTES[self.name]
+    url = self[attribute_name]
 
     if url
       self.document.url ? URI.join(self.document.url, url) : URI(url)
