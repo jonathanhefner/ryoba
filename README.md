@@ -1,6 +1,20 @@
 # ryoba
 
-Nokogiri utility methods.
+[Nokogiri](https://rubygems.org/gems/nokogiri) utility methods.
+
+
+## API
+
+- Nokogiri::XML::Node
+  - [#matches!](http://www.rubydoc.info/gems/ryoba/Nokogiri/XML/Node:matches%21)
+  - [#text!](http://www.rubydoc.info/gems/ryoba/Nokogiri/XML/Node:text%21)
+  - [#uri](http://www.rubydoc.info/gems/ryoba/Nokogiri/XML/Node:uri)
+- Nokogiri::XML::Searchable
+  - [#ancestor](http://www.rubydoc.info/gems/ryoba/Nokogiri/XML/Searchable:ancestor)
+  - [#ancestor!](http://www.rubydoc.info/gems/ryoba/Nokogiri/XML/Searchable:ancestor%21)
+  - [#ancestors!](http://www.rubydoc.info/gems/ryoba/Nokogiri/XML/Searchable:ancestors%21)
+  - [#at!](http://www.rubydoc.info/gems/ryoba/Nokogiri/XML/Searchable:at%21)
+  - [#search!](http://www.rubydoc.info/gems/ryoba/Nokogiri/XML/Searchable:search%21)
 
 
 ## Installation
