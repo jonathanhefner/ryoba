@@ -22,6 +22,16 @@ class NokogiriXmlNodeTest < Minitest::Test
     assert_raises(Ryoba::Error) { node.text! }
   end
 
+  def test_matchbang_success
+    node = make_node('<div id="good" />').child
+    assert_equal node, node.matches!("#good")
+  end
+
+  def test_matchbang_failure
+    node = make_node('<div id="good" />').child
+    assert_raises(Ryoba::Error) { node.matches!("#bad") }
+  end
+
   def test_uri_relative
     relative = "/foo"
     expected = URI(relative)

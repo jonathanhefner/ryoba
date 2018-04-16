@@ -16,6 +16,22 @@ class Nokogiri::XML::Node
     result
   end
 
+  # Like +Node#matches?+, but, instead of returning a boolean, returns
+  # the Node if it matches +selector+ and raises an error otherwise.
+  #
+  # @param selector [String]
+  #   selector to match
+  # @return [self]
+  # @raise [Ryoba::Error]
+  #   if Node does not match +selector+
+  def matches!(selector)
+    if !self.matches?(selector)
+      abbreviated = self.to_html[/[^>]+>/]
+      raise Ryoba::Error.new("Node #{abbreviated} does not match #{selector.inspect}")
+    end
+    self
+  end
+
   HTML_ELEMENT_URI_ATTRIBUTES = {
     "a" => "href",
     "img" => "src",
