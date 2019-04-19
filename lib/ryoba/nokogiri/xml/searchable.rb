@@ -1,10 +1,21 @@
 module Nokogiri::XML::Searchable
 
-  # Like +Searchable#search+, but raises an exception if there are no
+  # Like +Searchable#search+, but raises an error if there are no
   # results.
   #
+  # @example
+  #   xml = Nokogiri::XML(<<-XML)
+  #     <body>
+  #       <div id="a" />
+  #       <div id="b" />
+  #     </body>
+  #   XML
+  #
+  #   xml.search!("div")  # == NodeSet [div#a, div#b]
+  #   xml.search!("img")  # raise error
+  #
   # @param queries [Array<String>]
-  # @return [Array<Nokogiri::XML::Element>]
+  # @return [Nokogiri::XML::NodeSet]
   # @raise [Ryoba::Error]
   #   if all queries yield no results
   def search!(*queries)
@@ -15,8 +26,18 @@ module Nokogiri::XML::Searchable
     results
   end
 
-  # Like +Searchable#at+, but raises an exception if there are no
-  # results.
+  # Like +Searchable#at+, but raises an error if there are no results.
+  #
+  # @example
+  #   xml = Nokogiri::XML(<<-XML)
+  #     <body>
+  #       <div id="a" />
+  #       <div id="b" />
+  #     </body>
+  #   XML
+  #
+  #   xml.at!("div")  # == Node div#a
+  #   xml.at!("img")  # raise error
   #
   # @param queries [Array<String>]
   # @return [Nokogiri::XML::Element]
@@ -30,11 +51,26 @@ module Nokogiri::XML::Searchable
     result
   end
 
-  # Like +Searchable#ancestors+, but raises an exception if there are no
+  # Like +Searchable#ancestors+, but raises an error if there are no
   # matching ancestors.
   #
+  # @example
+  #   xml = Nokogiri::XML(<<-XML)
+  #     <body>
+  #       <div id="a">
+  #         <div id="b">
+  #           <img src="cat.jpg">
+  #         </div>
+  #       </div>
+  #     </body>
+  #   XML
+  #
+  #   xml.at("img").ancestors!("div")  # == NodeSet [div#b, div#a]
+  #   xml.at("img").ancestors!("#a")   # == NodeSet [div#a]
+  #   xml.at("img").ancestors!("#z")   # raise error
+  #
   # @param selector [String]
-  # @return [Array<Nokogiri::XML::Element>]
+  # @return [Nokogiri::XML::NodeSet]
   # @raise [Ryoba::Error]
   #   if no ancestors match +selector+
   def ancestors!(selector = nil)
@@ -48,6 +84,21 @@ module Nokogiri::XML::Searchable
   # Like +Searchable#ancestors+, but returns only the first matching
   # ancestor.
   #
+  # @example
+  #   xml = Nokogiri::XML(<<-XML)
+  #     <body>
+  #       <div id="a">
+  #         <div id="b">
+  #           <img src="cat.jpg">
+  #         </div>
+  #       </div>
+  #     </body>
+  #   XML
+  #
+  #   xml.at("img").ancestor("div")  # == Node div#b
+  #   xml.at("img").ancestor("#a")   # == Node div#a
+  #   xml.at("img").ancestor("#z")   # == nil
+  #
   # @param selector [String]
   # @return [Nokogiri::XML::Element, nil]
   def ancestor(selector = nil)
@@ -56,6 +107,21 @@ module Nokogiri::XML::Searchable
 
   # Like +Searchable#ancestors!+, but returns only the first matching
   # ancestor.
+  #
+  # @example
+  #   xml = Nokogiri::XML(<<-XML)
+  #     <body>
+  #       <div id="a">
+  #         <div id="b">
+  #           <img src="cat.jpg">
+  #         </div>
+  #       </div>
+  #     </body>
+  #   XML
+  #
+  #   xml.at("img").ancestor!("div")  # == Node div#b
+  #   xml.at("img").ancestor!("#a")   # == Node div#a
+  #   xml.at("img").ancestor!("#z")   # raise error
   #
   # @param selector [String]
   # @return [Nokogiri::XML::Element]
