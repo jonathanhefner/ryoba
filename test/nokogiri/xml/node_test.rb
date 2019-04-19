@@ -2,6 +2,30 @@ require "test_helper"
 
 class NokogiriXmlNodeTest < Minitest::Test
 
+  def test_contentpredicate_with_some_text
+    node = make_node(" <div> some text </div> ")
+    assert_equal node.content.strip, node.content?
+  end
+
+  def test_contentpredicate_with_no_text
+    node = make_node(<<-XML)
+      <div>
+        <div />
+        <div></div>
+        <div> </div>
+      </div>
+    XML
+
+    node.search("div").each do |div|
+      assert_nil div.content?
+    end
+  end
+
+  def test_inner_textpredicate_aliases_contentpredicate
+    node = make_node("")
+    assert_equal :content?, node.method(:inner_text?).original_name
+  end
+
   def test_contentbang_with_some_text
     node = make_node(" <div> some text </div> ")
     assert_equal node.content.strip, node.content!

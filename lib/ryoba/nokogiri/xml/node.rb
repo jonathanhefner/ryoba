@@ -2,6 +2,32 @@ require "uri"
 
 class Nokogiri::XML::Node
 
+  # Equivalent to +.content.strip+, but returns nil if the result is an
+  # empty string.
+  #
+  # @example
+  #   xml = Nokogiri::XML(<<-XML)
+  #     <body>
+  #       <h1>
+  #         Headline 1
+  #       </h1>
+  #       <h2> Headline 2 </h2>
+  #       <h3> </h3>
+  #     </body>
+  #   XML
+  #
+  #   xml.at("h1").content?  # == "Headline 1"
+  #   xml.at("h2").content?  # == "Headline 2"
+  #   xml.at("h3").content?  # == nil
+  #
+  # @return [String, nil]
+  def content?
+    result = self.content.strip
+    result unless result.empty?
+  end
+
+  alias_method :inner_text?, :content?
+
   # Equivalent to +.content.strip+, but raises an error if the result is
   # an empty string.
   #

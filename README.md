@@ -9,6 +9,8 @@
   - [#content!](http://www.rubydoc.info/gems/ryoba/Nokogiri/XML/Node:content%21)
     - aliased as [#inner_text!](http://www.rubydoc.info/gems/ryoba/Nokogiri/XML/Node:inner_text%21)
     - aliased as [#text!](http://www.rubydoc.info/gems/ryoba/Nokogiri/XML/Node:text%21)
+  - [#content?](http://www.rubydoc.info/gems/ryoba/Nokogiri/XML/Node:content%3F)
+    - aliased as [#inner_text?](http://www.rubydoc.info/gems/ryoba/Nokogiri/XML/Node:inner_text%3F)
   - [#matches!](http://www.rubydoc.info/gems/ryoba/Nokogiri/XML/Node:matches%21)
   - [#uri](http://www.rubydoc.info/gems/ryoba/Nokogiri/XML/Node:uri)
 - [Nokogiri::XML::Searchable](https://www.rubydoc.info/gems/ryoba/Nokogiri/XML/Searchable)
