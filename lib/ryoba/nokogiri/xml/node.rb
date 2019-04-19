@@ -2,8 +2,8 @@ require "uri"
 
 class Nokogiri::XML::Node
 
-  # Equivalent to +.text.strip+, but raises an error if the result is an
-  # empty string.
+  # Equivalent to +.content.strip+, but raises an error if the result is
+  # an empty string.
   #
   # @example
   #   xml = Nokogiri::XML(<<-XML)
@@ -16,20 +16,23 @@ class Nokogiri::XML::Node
   #     </body>
   #   XML
   #
-  #   xml.at("h1").text!  # == "Headline 1"
-  #   xml.at("h2").text!  # == "Headline 2"
-  #   xml.at("h3").text!  # raise error
+  #   xml.at("h1").content!  # == "Headline 1"
+  #   xml.at("h2").content!  # == "Headline 2"
+  #   xml.at("h3").content!  # raise error
   #
   # @return [String]
   # @raise [Ryoba::Error]
   #   if result is an empty string
-  def text!
-    result = self.text.strip
+  def content!
+    result = self.content.strip
     if result.empty?
       raise Ryoba::Error.new("No text in:\n#{self.to_html}")
     end
     result
   end
+
+  alias_method :inner_text!, :content!
+  alias_method :text!, :content!
 
   # Like +Node#matches?+, but returns the Node if +selector+ matches,
   # and raises an error otherwise.

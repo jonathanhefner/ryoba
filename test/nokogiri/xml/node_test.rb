@@ -2,24 +2,33 @@ require "test_helper"
 
 class NokogiriXmlNodeTest < Minitest::Test
 
-  def test_textbang_with_some_text
-    text = "some text"
-    node = make_node(" <div> #{text} </div> ")
-
-    assert_equal text, node.text!
+  def test_contentbang_with_some_text
+    node = make_node(" <div> some text </div> ")
+    assert_equal node.content.strip, node.content!
   end
 
-  def test_textbang_with_no_text
+  def test_contentbang_with_no_text
     node = make_node(<<-XML)
-      <div />
-      <div></div>
-      <div> </div>
       <div>
+        <div />
+        <div></div>
         <div> </div>
       </div>
     XML
 
-    assert_raises(Ryoba::Error) { node.text! }
+    node.search("div").each do |div|
+      assert_raises(Ryoba::Error) { div.content! }
+    end
+  end
+
+  def test_textbang_aliases_contentbang
+    node = make_node("")
+    assert_equal :content!, node.method(:text!).original_name
+  end
+
+  def test_inner_textbang_aliases_contentbang
+    node = make_node("")
+    assert_equal :content!, node.method(:inner_text!).original_name
   end
 
   def test_matchbang_success
