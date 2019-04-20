@@ -118,10 +118,7 @@ class Nokogiri::XML::Node
   def uri(attribute_name = nil)
     attribute_name ||= HTML_ELEMENT_URI_ATTRIBUTES[self.name]
     url = self[attribute_name]
-
-    if url
-      self.document.url ? URI.join(self.document.url, url) : URI(url)
-    end
+    URI.join(*self.document.url, url) if url
   end
 
 end
