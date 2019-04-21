@@ -8,8 +8,8 @@ class Minitest::Test
 
   private
 
-  def make_node(xml)
-    Nokogiri::XML("<root>#{xml}</root>").at("root")
+  def make_node(xml, document_url = nil)
+    Nokogiri::XML("<root>#{xml}</root>", document_url).at("root")
   end
 
 end

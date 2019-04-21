@@ -67,25 +67,25 @@ class NokogiriXmlNodeTest < Minitest::Test
 
   def test_uri_relative
     relative = "/foo"
-    expected = URI(relative)
+    node = make_node("<div url=\"#{relative}\" />").at("div")
 
-    assert_node_uri expected, relative
+    assert_equal URI(relative), node.uri("url")
   end
 
   def test_uri_relative_to_absolute
     relative = "/foo"
     base = "http://localhost"
-    expected = URI.join(base, relative)
+    node = make_node("<div url=\"#{relative}\" />", base).at("div")
 
-    assert_node_uri expected, relative, base
+    assert_equal URI.join(base, relative), node.uri("url")
   end
 
   def test_uri_absolute
     absolute = "http://localhost/foo"
     base = "http://example.com"
-    expected = URI(absolute)
+    node = make_node("<div url=\"#{absolute}\" />", base).at("div")
 
-    assert_node_uri expected, absolute, base
+    assert_equal URI(absolute), node.uri("url")
   end
 
   def test_uri_from_appropriate_html_attribute
@@ -107,14 +107,6 @@ class NokogiriXmlNodeTest < Minitest::Test
     make_node(html).children.each do |node|
       assert_nil node.uri
     end
-  end
-
-  private
-
-  def assert_node_uri(expected, attribute_value, document_url = nil)
-    xml = "<div data-uri=\"#{attribute_value}\" />"
-    node = Nokogiri::XML::Document.parse(xml, document_url).child
-    assert_equal expected, node.uri("data-uri")
   end
 
 end
