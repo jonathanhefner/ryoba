@@ -5,6 +5,8 @@
 
 ## API
 
+- [Nokogiri::XML::Document](https://www.rubydoc.info/gems/ryoba/Nokogiri/XML/Document)
+  - [#uri](http://www.rubydoc.info/gems/ryoba/Nokogiri/XML/Document:uri)
 - [Nokogiri::XML::Node](https://www.rubydoc.info/gems/ryoba/Nokogiri/XML/Node)
   - [#content!](http://www.rubydoc.info/gems/ryoba/Nokogiri/XML/Node:content%21)
     - aliased as [#inner_text!](http://www.rubydoc.info/gems/ryoba/Nokogiri/XML/Node:inner_text%21)
