@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.name          = "ryoba"
   spec.version       = Ryoba::VERSION
   spec.authors       = ["Jonathan Hefner"]
-  spec.email         = ["jonathan.hefner@gmail.com"]
+  spec.email         = ["jonathan@hefner.pro"]
 
   spec.summary       = %q{Nokogiri utility methods}
   spec.homepage      = "https://github.com/jonathanhefner/ryoba"
