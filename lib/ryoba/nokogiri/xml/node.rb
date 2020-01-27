@@ -2,7 +2,7 @@ require "uri"
 
 class Nokogiri::XML::Node
 
-  # Equivalent to +.content.strip+, but returns nil if the result is an
+  # Equivalent to +content.strip+, but returns nil if the result is an
   # empty string.
   #
   # @example
@@ -28,8 +28,8 @@ class Nokogiri::XML::Node
 
   alias_method :inner_text?, :content?
 
-  # Equivalent to +.content.strip+, but raises an error if the result is
-  # an empty string.
+  # Equivalent to +content.strip+, but raises an exception if the result
+  # is an empty string.
   #
   # @example
   #   xml = Nokogiri::XML(<<-XML)
@@ -44,11 +44,11 @@ class Nokogiri::XML::Node
   #
   #   xml.at("h1").content!  # == "Headline 1"
   #   xml.at("h2").content!  # == "Headline 2"
-  #   xml.at("h3").content!  # raise error
+  #   xml.at("h3").content!  # raises exception
   #
   # @return [String]
   # @raise [Ryoba::Error]
-  #   if result is an empty string
+  #   if +content.strip+ returns an empty string
   def content!
     result = self.content.strip
     if result.empty?
@@ -61,7 +61,7 @@ class Nokogiri::XML::Node
   alias_method :text!, :content!
 
   # Like +Node#matches?+, but returns the Node if +selector+ matches,
-  # and raises an error otherwise.
+  # and raises an exception otherwise.
   #
   # @example
   #   xml = Nokogiri::XML(<<-XML)
@@ -71,8 +71,8 @@ class Nokogiri::XML::Node
   #     </body>
   #   XML
   #
-  #   xml.at("#a").matches(".c")!  # == Node div#a.c
-  #   xml.at("#b").matches(".c")!  # raise error
+  #   xml.at("#a").matches!(".c")  # == Node div#a.c
+  #   xml.at("#b").matches!(".c")  # raises exception
   #
   # @param selector [String]
   # @return [self]
@@ -93,9 +93,9 @@ class Nokogiri::XML::Node
   }
 
   # Builds a URI from a specified attribute.  If no attribute is
-  # specified, an element-appropriate attribute will be chosen from
-  # {HTML_ELEMENT_URI_ATTRIBUTES}, if possible.  Relative URIs will be
-  # converted to absolute URIs using the Node document's +url+, if
+  # specified, an element-appropriate attribute is chosen from
+  # {HTML_ELEMENT_URI_ATTRIBUTES}, if possible.  Relative URIs are
+  # converted to absolute URIs using the Node's +document.url+, if
   # possible.
   #
   # @example
