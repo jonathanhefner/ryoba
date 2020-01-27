@@ -25,13 +25,13 @@
 
 ## Installation
 
-Install from [Ruby Gems](https://rubygems.org/gems/ryoba):
+Install the [gem](https://rubygems.org/gems/ryoba):
 
 ```bash
 $ gem install ryoba
 ```
 
-Then require in your Ruby script:
+Then require in your Ruby code:
 
 ```ruby
 require "ryoba"
