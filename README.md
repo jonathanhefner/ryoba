@@ -1,4 +1,4 @@
-# ryoba [![Build Status](https://travis-ci.org/jonathanhefner/ryoba.svg?branch=master)](https://travis-ci.org/jonathanhefner/ryoba)
+# ryoba
 
 [Nokogiri](https://rubygems.org/gems/nokogiri) utility methods.
 
