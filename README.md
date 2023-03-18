@@ -25,17 +25,7 @@
 
 ## Installation
 
-Install the [gem](https://rubygems.org/gems/ryoba):
-
-```bash
-$ gem install ryoba
-```
-
-Then require in your Ruby code:
-
-```ruby
-require "ryoba"
-```
+Install the [`ryoba` gem](https://rubygems.org/gems/ryoba).
 
 
 ## Contributing
