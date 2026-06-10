@@ -1,3 +1,8 @@
+## 2.0.0
+
+* [BREAKING] Drop support for Ruby < 3.4
+
+
 ## 1.1.0
 
 * Rename `Nokogiri::XML::Node#text!` to `#content!`, and alias as
